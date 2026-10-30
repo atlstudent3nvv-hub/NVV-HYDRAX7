@@ -1,0 +1,1195 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050917">
+<title>NVV HYDRAX — Ultimate Weather Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050917;--surface:#0e1930;--surface2:#152442;
+  --line:rgba(145,190,255,.16);--text:#f0f8ff;
+  --muted:#94aac6;--cyan:#48e8ff;--blue:#638dff;
+  --violet:#b28cff;--green:#48efb5;--amber:#ffd27d;
+  --danger:#ff748e;--radius:22px
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--text);font-family:"DM Sans",sans-serif;
+  background:var(--bg);min-height:100vh;overflow-x:hidden
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:
+    radial-gradient(ellipse 50% 42% at 85% 0%,#273b8050,transparent),
+    radial-gradient(ellipse 38% 38% at 0% 65%,#005e7040,transparent),
+    linear-gradient(125deg,#050917,#0a1226 65%,#080d20)
+}
+button,input{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+button:focus-visible,input:focus-visible,a:focus-visible{
+  outline:2px solid var(--cyan);outline-offset:3px
+}
+a{color:inherit;text-decoration:none}
+.layout{display:flex;min-height:100vh}
+.sidebar{
+  width:244px;flex-shrink:0;position:sticky;top:0;height:100vh;
+  padding:27px 17px;background:#081123eb;
+  border-right:1px solid var(--line);display:flex;flex-direction:column;
+  backdrop-filter:blur(24px);z-index:5
+}
+.logo{display:flex;gap:12px;align-items:center;margin-bottom:39px}
+.logo-mark{
+  height:48px;width:48px;border-radius:16px;display:grid;place-items:center;
+  font-size:26px;color:#04152a;font-weight:900;
+  background:linear-gradient(135deg,#4ceaff,#7580ff);
+  box-shadow:0 0 35px #2ddfff55
+}
+.logo strong{font:700 23px "Space Grotesk";letter-spacing:1px}
+.logo small{display:block;color:var(--cyan);font-size:9px;letter-spacing:2.7px}
+.nav{display:flex;flex-direction:column;gap:6px}
+.nav a{
+  display:flex;align-items:center;gap:12px;padding:13px 15px;
+  border-radius:13px;color:#a2b4d1;font-size:13px;transition:.25s
+}
+.nav a:hover,.nav a.active{
+  background:linear-gradient(90deg,#1a3a55,#1b2449);
+  color:var(--cyan);box-shadow:inset 3px 0 var(--cyan)
+}
+.nav .sym{font-size:20px;width:23px;text-align:center}
+.sidebar-foot{
+  margin-top:auto;border:1px solid var(--line);border-radius:16px;
+  padding:16px;background:#14243c;color:var(--muted);
+  font-size:11px;line-height:1.9
+}
+.online{
+  display:inline-block;height:8px;width:8px;background:var(--green);
+  border-radius:50%;box-shadow:0 0 12px var(--green);margin-right:7px
+}
+.main{width:calc(100% - 244px);min-width:0;padding:27px 30px}
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:14px;margin-bottom:25px
+}
+.eyebrow{
+  font-size:10px;letter-spacing:2.2px;font-weight:800;color:var(--cyan)
+}
+.topbar h1{font:700 24px "Space Grotesk";margin:6px 0}
+.top-pills{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.pill{
+  border:1px solid var(--line);background:#17243baf;
+  padding:10px 14px;border-radius:50px;color:#bcd1e8;font-size:11px
+}
+.hero{
+  position:relative;isolation:isolate;overflow:hidden;
+  min-height:295px;border-radius:27px;padding:38px;
+  background:linear-gradient(105deg,#112848,#111b42 64%,#251e54);
+  border:1px solid #47618c;margin-bottom:22px
+}
+.hero:before{
+  content:"";position:absolute;right:-85px;top:-140px;
+  width:530px;height:530px;border-radius:50%;z-index:-1;
+  background:
+    repeating-radial-gradient(circle,#7ad6ff12 0 2px,transparent 3px 35px),
+    radial-gradient(circle,#4385ff55 0%,#715bff24 43%,transparent 69%);
+  animation:orbit 22s linear infinite
+}
+.hero:after{
+  content:"◉";position:absolute;right:11%;top:9%;font-size:190px;
+  color:#83e8ff24;text-shadow:0 0 60px #4e8affaa;z-index:-1
+}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.hero h2{
+  font:700 clamp(29px,4vw,51px) "Space Grotesk";
+  line-height:1.13;letter-spacing:-1.7px;margin:13px 0
+}
+.hero h2 span{
+  color:transparent;background:linear-gradient(90deg,#53f3ff,#a6a1ff);
+  background-clip:text;-webkit-background-clip:text
+}
+.hero p{max-width:650px;color:#b8cce8;line-height:1.75;font-size:14px}
+.search{
+  display:flex;gap:10px;flex-wrap:wrap;margin-top:22px
+}
+input{
+  color:var(--text);background:#07172be8;
+  border:1px solid #385373;border-radius:13px;padding:13px 15px;min-width:0
+}
+input::placeholder{color:#7f98b8}
+.search input{flex:1;min-width:200px;max-width:440px}
+.btn{
+  border:0;border-radius:13px;padding:12px 17px;font-weight:800;
+  color:#04172a;background:linear-gradient(110deg,#4ceaff,#819aff);
+  transition:transform .2s,filter .2s
+}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.btn.alt{color:#d9efff;background:#1c304e;border:1px solid #385674}
+.status{
+  margin-bottom:20px;padding:12px 16px;border-radius:13px;
+  background:#10213c;border:1px solid var(--line);
+  color:#bad5ee;font-size:12px
+}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{
+  position:relative;overflow:hidden;min-width:0;
+  background:linear-gradient(145deg,#142541e8,#0b162be8);
+  border:1px solid var(--line);border-radius:var(--radius);padding:23px;
+  box-shadow:0 15px 45px #00000020;transition:border-color .25s,transform .25s
+}
+.card:hover{border-color:#60aaff55}
+.card h3{font:700 19px "Space Grotesk";margin:8px 0 16px}
+.section{margin-bottom:20px}
+.section-title{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;margin:29px 0 15px
+}
+.section-title h2{font:700 21px "Space Grotesk";margin:0}
+.muted{color:var(--muted);font-size:12px;line-height:1.75}
+.temp{
+  font:700 clamp(53px,6vw,82px) "Space Grotesk";
+  letter-spacing:-5px;margin:10px 0
+}
+.weather-art{
+  position:absolute;right:24px;top:33px;font-size:86px;
+  filter:drop-shadow(0 0 22px #67caff70);
+  animation:float 5s ease-in-out infinite
+}
+@keyframes float{50%{transform:translateY(-11px)}}
+.statgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stat{
+  background:#1b2d49a8;border:1px solid #3145639c;
+  padding:13px;border-radius:13px
+}
+.stat small{display:block;color:#98afcb;font-size:10px}
+.stat strong{
+  display:block;font:700 17px "Space Grotesk";
+  margin-top:8px;overflow-wrap:anywhere
+}
+.risk-content{display:flex;gap:23px;align-items:center;flex-wrap:wrap}
+.ring{
+  height:174px;width:174px;flex-shrink:0;border-radius:50%;
+  display:grid;place-items:center;
+  background:conic-gradient(var(--green) 0deg,#263952 0deg);
+  box-shadow:0 0 28px #38e3b41a
+}
+.ring-center{
+  height:137px;width:137px;border-radius:50%;
+  background:#101f36;display:grid;place-items:center;text-align:center
+}
+.ring-center strong{font:700 49px "Space Grotesk"}
+.ring-center small{display:block;color:var(--muted);font-size:10px}
+.risk-info{flex:1;min-width:145px}
+.risk-info h3{font-size:25px}
+.metrics{display:flex;gap:24px;flex-wrap:wrap;margin-top:25px}
+.metrics small{color:var(--muted)}
+.metrics strong{display:block;font-size:20px;margin-top:6px}
+.big-icon{font-size:45px;margin:10px 0}
+.map{
+  height:430px;border-radius:17px;overflow:hidden;
+  background:#142a42;border:1px solid #395a78
+}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row input{flex:1;min-width:170px}
+.results{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.results button{
+  border:1px solid #416181;background:#1c3453;color:#e1f3ff;
+  padding:9px 12px;border-radius:11px
+}
+.results button:hover{border-color:var(--cyan)}
+.forecast{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:9px}
+.day{
+  text-align:center;padding:17px 8px;background:#1a2c49;
+  border:1px solid #30476a;border-radius:14px
+}
+.day strong{display:block;font-size:13px}
+.day .emoji{font-size:28px;margin:14px 0}
+.day small{color:var(--muted);font-size:10px}
+.bars{
+  display:grid;grid-template-columns:repeat(24,minmax(0,1fr));
+  align-items:end;gap:5px;height:125px;margin:22px 0 10px
+}
+.bar{
+  min-height:5px;border-radius:6px 6px 0 0;
+  background:linear-gradient(0deg,#5b69fa,#4beeff);
+  box-shadow:0 0 10px #4beeff22
+}
+input[type=range]{width:100%;accent-color:var(--cyan)}
+.story{white-space:pre-wrap;color:#c4d9ee;font-size:13px;line-height:1.9}
+.ai-card{
+  background:linear-gradient(145deg,#1b2048,#0c1931);
+  border-color:#6159a8
+}
+.ai-head{display:flex;gap:14px;align-items:center;margin-bottom:18px}
+.ai-orb{
+  height:58px;width:58px;flex-shrink:0;border-radius:50%;
+  display:grid;place-items:center;font-size:27px;
+  background:radial-gradient(circle at 30% 25%,#d0fbff,#7486ff 55%,#7545c7);
+  box-shadow:0 0 35px #777dff8c;
+  animation:pulse 3s ease-in-out infinite
+}
+@keyframes pulse{50%{box-shadow:0 0 48px #5b9dffb8;transform:scale(1.04)}}
+.chat{
+  height:320px;overflow:auto;display:flex;flex-direction:column;gap:12px;
+  padding:15px;background:#09142a;border:1px solid #3c4678;border-radius:15px
+}
+.message{
+  padding:12px 15px;border-radius:13px;max-width:92%;
+  font-size:13px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere
+}
+.message.assistant{
+  align-self:flex-start;background:#1b2a50;border:1px solid #384b80
+}
+.message.user{
+  align-self:flex-end;background:#15495c;border:1px solid #247e97
+}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:13px 0}
+.chips button{
+  border:1px solid #5b518c;background:#292954;color:#e4ddff;
+  border-radius:30px;padding:9px 12px;font-size:11px
+}
+.chat-entry{display:flex;gap:9px}
+.chat-entry input{flex:1}
+.notice{
+  padding:16px;border-radius:15px;background:#29231d;
+  border:1px solid #6c573d;color:#f5d5a4;font-size:12px;line-height:1.8
+}
+footer{text-align:center;padding:30px;color:var(--muted);font-size:11px}
+@media(max-width:1120px){
+  .sidebar{width:75px;padding:22px 9px}
+  .logo strong,.logo small,.nav .label,.sidebar-foot{display:none}
+  .nav a{justify-content:center}
+  .main{width:calc(100% - 75px)}
+  .forecast{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:760px){
+  .sidebar{display:none}.main{width:100%;padding:16px}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .hero{padding:25px}.hero:after{opacity:.3}
+  .forecast{grid-template-columns:repeat(2,1fr)}
+  .statgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .weather-art{font-size:62px;right:15px}
+  .map{height:340px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-mark">◈</div>
+    <div><strong>HYDRAX</strong><small>NVV ULTIMATE</small></div>
+  </div>
+  <nav class="nav">
+    <a class="active" href="#dashboard"><span class="sym">◉</span><span class="label">Dashboard</span></a>
+    <a href="#geo"><span class="sym">◎</span><span class="label">Geo Explorer</span></a>
+    <a href="#storm"><span class="sym">ϟ</span><span class="label">Storm Timeline</span></a>
+    <a href="#forecast-section"><span class="sym">☁</span><span class="label">Forecast</span></a>
+    <a href="#ai"><span class="sym">✦</span><span class="label">HYDRAX AI</span></a>
+    <a href="#battle"><span class="sym">⚔</span><span class="label">City Battle</span></a>
+    <a href="#saved"><span class="sym">☆</span><span class="label">Saved Places</span></a>
+  </nav>
+  <div class="sidebar-foot">
+    <span class="online"></span> WEATHER SYSTEM<br>
+    Connected to Open-Meteo<br>
+    Forecast-based rainfall analysis
+  </div>
+</aside>
+
+<main class="main" id="dashboard">
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">NVV HYDRAX / INTELLIGENCE CENTER</div>
+      <h1>Weather Command Center</h1>
+    </div>
+    <div class="top-pills">
+      <span class="pill" id="clock">--:--</span>
+      <span class="pill"><span class="online"></span> SYSTEM ACTIVE</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">✦ THE FUTURE OF WEATHER INTELLIGENCE</div>
+    <h2>Know the Weather.<br><span>Stay Ahead of the Storm.</span></h2>
+    <p>
+      Real forecast data, intelligent rainfall analysis, interactive
+      Google Maps, and your own HYDRAX weather AI — together in one dashboard.
+    </p>
+    <div class="search">
+      <input id="searchInput" placeholder="Search city or region..." aria-label="Search city">
+      <button class="btn" id="searchBtn">Search Location</button>
+      <button class="btn alt" id="locateBtn">◎ My Location</button>
+    </div>
+    <div class="results" id="searchResults"></div>
+  </section>
+
+  <div class="status" id="status" role="status">Connecting to weather services...</div>
+
+  <div class="grid2 section">
+    <section class="card">
+      <div class="eyebrow">LIVE MODEL CONDITIONS</div>
+      <h3 id="placeName">Loading location...</h3>
+      <div class="weather-art" id="weatherArt">🌤️</div>
+      <div class="temp" id="temperature">--°</div>
+      <h3 id="condition">Loading weather...</h3>
+      <p class="muted" id="feels">Fetching current conditions</p>
+      <div class="statgrid">
+        <div class="stat"><small>Humidity</small><strong id="humidity">--</strong></div>
+        <div class="stat"><small>Wind</small><strong id="wind">--</strong></div>
+        <div class="stat"><small>Rain Now</small><strong id="rainNow">--</strong></div>
+        <div class="stat"><small>Cloud Cover</small><strong id="clouds">--</strong></div>
+        <div class="stat"><small>Pressure</small><strong id="pressure">--</strong></div>
+        <div class="stat"><small>Rain Chance</small><strong id="rainChance">--</strong></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="eyebrow">HYDRAX RAINFALL ENGINE</div>
+      <h3>Rainfall Exposure Analysis</h3>
+      <div class="risk-content">
+        <div class="ring" id="gauge">
+          <div class="ring-center">
+            <div><strong id="riskScore">--</strong><small>EXPOSURE / 100</small></div>
+          </div>
+        </div>
+        <div class="risk-info">
+          <div class="eyebrow">EXPERIMENTAL INDICATOR</div>
+          <h3 id="riskLevel">Analyzing...</h3>
+          <p class="muted">
+            Forecast-based rainfall exposure.
+            Not a validated street-level flood prediction.
+          </p>
+        </div>
+      </div>
+      <div class="metrics">
+        <div><small>24H Forecast Rain</small><strong id="rain24">--</strong></div>
+        <div><small>Peak Hourly Rain</small><strong id="peakRain">--</strong></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="grid3 section">
+    <section class="card">
+      <div class="eyebrow">RAIN COUNTDOWN</div>
+      <h3>Next Rainfall</h3>
+      <div class="big-icon">⏳</div>
+      <h3 id="countdown">--</h3>
+    </section>
+    <section class="card">
+      <div class="eyebrow">ATMOSPHERIC MOOD</div>
+      <h3>Weather Atmosphere</h3>
+      <div class="big-icon" id="moodIcon">🌤️</div>
+      <p class="muted" id="moodText">Loading conditions...</p>
+    </section>
+    <section class="card">
+      <div class="eyebrow">SOLAR INTELLIGENCE</div>
+      <h3>Sun Journey</h3>
+      <div class="big-icon">☀️</div>
+      <p id="sunrise">Sunrise: --</p>
+      <p class="muted" id="sunset">Sunset: --</p>
+    </section>
+  </div>
+
+  <section id="geo" class="section">
+    <div class="section-title">
+      <h2>◎ Google Maps Geo Explorer</h2>
+      <span class="pill">CLICK TO ANALYZE</span>
+    </div>
+    <div class="card">
+      <p class="muted">
+        Explore the map in road or satellite mode.
+        Select any location to load its weather forecast.
+      </p>
+      <div class="row" style="margin-bottom:15px">
+        <input type="password" id="mapsKey" placeholder="Google Maps browser API key" aria-label="Google Maps API key">
+        <button class="btn" id="mapBtn">Activate Google Maps</button>
+      </div>
+      <div id="map" class="map"></div>
+      <p class="muted" id="mapStatus">Google Maps requires a configured API key.</p>
+    </div>
+  </section>
+
+  <section id="storm" class="section">
+    <div class="section-title">
+      <h2>ϟ Storm Timeline</h2>
+      <span class="pill">24-HOUR FORECAST</span>
+    </div>
+    <div class="card">
+      <div class="eyebrow">PRECIPITATION INTELLIGENCE</div>
+      <div class="bars" id="rainBars"></div>
+      <input id="hourSlider" type="range" min="0" max="23" value="0" aria-label="Forecast hour">
+      <div class="statgrid" style="margin-top:18px">
+        <div class="stat"><small>Forecast Time</small><strong id="hourTime">--</strong></div>
+        <div class="stat"><small>Rainfall</small><strong id="hourRain">--</strong></div>
+        <div class="stat"><small>Temperature</small><strong id="hourTemp">--</strong></div>
+        <div class="stat"><small>Rain Chance</small><strong id="hourChance">--</strong></div>
+      </div>
+      <div class="row" style="margin-top:18px">
+        <button class="btn alt" id="refreshBtn">↻ Refresh Data</button>
+        <button class="btn alt" id="exportBtn">↓ Export CSV</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="forecast-section" class="section">
+    <div class="section-title"><h2>☁ Seven-Day Forecast</h2></div>
+    <div class="card"><div id="forecast" class="forecast"></div></div>
+  </section>
+
+  <div class="grid2 section">
+    <section class="card">
+      <div class="eyebrow">ATMOSPHERIC INTELLIGENCE</div>
+      <h3>🌿 Air Quality</h3>
+      <div class="statgrid">
+        <div class="stat"><small>US AQI</small><strong id="aqi">--</strong></div>
+        <div class="stat"><small>PM2.5</small><strong id="pm25">--</strong></div>
+        <div class="stat"><small>PM10</small><strong id="pm10">--</strong></div>
+      </div>
+      <p class="muted" id="airStatus">Loading air quality...</p>
+    </section>
+    <section class="card">
+      <div class="eyebrow">SMART PLANNER</div>
+      <h3>🎯 Activity Recommendations</h3>
+      <div class="story" id="activities">Analyzing conditions...</div>
+    </section>
+  </div>
+
+  <section id="ai" class="section">
+    <div class="section-title">
+      <h2>✦ HYDRAX Intelligence</h2>
+      <span class="pill">AI WEATHER ASSISTANT</span>
+    </div>
+    <div class="card ai-card">
+      <div class="ai-head">
+        <div class="ai-orb">✦</div>
+        <div>
+          <h3 style="margin:0">HYDRAX AI</h3>
+          <p class="muted" style="margin:5px 0">
+            Your specialized weather assistant, powered by OpenRouter
+          </p>
+        </div>
+      </div>
+      <div class="chat" id="chat" aria-live="polite">
+        <div class="message assistant">
+Hello! I'm HYDRAX Intelligence.
+
+I can help interpret the current forecast, upcoming rainfall, weather patterns, and activity planning.
+
+Real AI responses require a secure /api/ai backend. I won't invent flood warnings or road conditions.
+        </div>
+      </div>
+      <div class="chips">
+        <button data-q="Explain the next 24 hours of rainfall.">24H Rain Briefing</button>
+        <button data-q="Explain the rainfall exposure score and its limitations.">Exposure Analysis</button>
+        <button data-q="Suggest outdoor activities based on this forecast.">Activity Advice</button>
+        <button data-q="Summarize the forecast clearly.">Weather Summary</button>
+      </div>
+      <div class="chat-entry">
+        <input id="aiInput" placeholder="Ask HYDRAX anything about the weather..." aria-label="AI question">
+        <button class="btn" id="aiSend">Send ✦</button>
+      </div>
+      <p class="muted" id="aiStatus">
+        AI requires a secure backend at /api/ai.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title"><h2>📖 Weather Story</h2></div>
+    <div class="card">
+      <div class="story" id="story">Loading weather story...</div>
+      <div class="row" style="margin-top:18px">
+        <button class="btn alt" id="copyBtn">Copy Story</button>
+        <button class="btn alt" id="shareBtn">Share Location</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="battle" class="section">
+    <div class="section-title"><h2>⚔ City Battle Arena</h2></div>
+    <div class="card">
+      <p class="muted">Compare real forecast data between two cities.</p>
+      <div class="row">
+        <input id="compareInput" placeholder="Search another city" aria-label="Compare city">
+        <button class="btn" id="compareBtn">Compare Cities</button>
+      </div>
+      <div class="results" id="compareResults"></div>
+      <div class="story" id="comparison" style="margin-top:17px">
+        Choose another city to compare.
+      </div>
+    </div>
+  </section>
+
+  <section id="saved" class="section">
+    <div class="section-title"><h2>☆ Saved Locations</h2></div>
+    <div class="card">
+      <button class="btn" id="saveBtn">☆ Save Current Location</button>
+      <div class="results" id="favorites"></div>
+    </div>
+  </section>
+
+  <div class="notice">
+    <strong>⚠ Important safety information</strong><br>
+    HYDRAX uses weather-model forecasts. The rainfall-exposure score is an
+    experimental heuristic, not a validated flood forecast. It cannot confirm
+    road flooding, water depth, or route safety. Follow official weather alerts.
+  </div>
+
+  <footer>NVV HYDRAX ULTIMATE © 2026 · Powered by Open-Meteo · Google Maps · OpenRouter</footer>
+</main>
+</div>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+const app = {
+  place:{name:"Vadodara, Gujarat, India",lat:22.3072,lon:73.1812},
+  weather:null,risk:null,map:null,marker:null,
+  requestId:0,favorites:[],chatHistory:[]
+};
+
+try{
+  const saved=JSON.parse(localStorage.getItem("hydrax-favorites")||"[]");
+  if(Array.isArray(saved)){
+    app.favorites=saved.filter(p=>
+      p&&typeof p.name==="string"&&
+      Number.isFinite(p.lat)&&Number.isFinite(p.lon)
+    ).slice(0,30);
+  }
+}catch{}
+
+function status(message){$("status").textContent=message}
+
+function valid(lat,lon){
+  return Number.isFinite(lat)&&Number.isFinite(lon)&&
+    lat>=-90&&lat<=90&&lon>=-180&&lon<=180;
+}
+
+function fmt(value,digits=0){
+  return value==null||!Number.isFinite(Number(value))
+    ?"—":Number(value).toFixed(digits);
+}
+
+async function getJSON(url){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),15000);
+  try{
+    const response=await fetch(url,{signal:controller.signal});
+    if(!response.ok)throw Error("HTTP "+response.status);
+    return await response.json();
+  }finally{clearTimeout(timer)}
+}
+
+function condition(code){
+  if(code===0)return "Clear Sky";
+  if(code<=3)return "Partly Cloudy";
+  if(code<=48)return "Foggy";
+  if(code<=57)return "Drizzle";
+  if(code<=67)return "Rainy";
+  if(code<=77)return "Snowy";
+  if(code<=82)return "Rain Showers";
+  if(code<=86)return "Snow Showers";
+  if(code>=95)return "Thunderstorm";
+  return "Variable Conditions";
+}
+
+function weatherIcon(code){
+  if(code===0)return "☀️";
+  if(code<=3)return "🌤️";
+  if(code<=48)return "🌫️";
+  if(code<=67)return "🌧️";
+  if(code<=77)return "❄️";
+  if(code<=82)return "🌦️";
+  if(code>=95)return "⛈️";
+  return "🌥️";
+}
+
+function weatherURL(lat,lon){
+  const url=new URL("https://api.open-meteo.com/v1/forecast");
+  url.search=new URLSearchParams({
+    latitude:lat,longitude:lon,
+    current:[
+      "temperature_2m","relative_humidity_2m",
+      "apparent_temperature","precipitation",
+      "weather_code","cloud_cover",
+      "surface_pressure","wind_speed_10m"
+    ].join(","),
+    hourly:[
+      "temperature_2m","precipitation",
+      "precipitation_probability"
+    ].join(","),
+    daily:[
+      "weather_code","temperature_2m_max",
+      "temperature_2m_min","precipitation_sum",
+      "sunrise","sunset"
+    ].join(","),
+    timezone:"auto",forecast_days:7
+  });
+  return url.toString();
+}
+
+function currentIndex(w){
+  const exact=w.hourly.time.indexOf(w.current.time);
+  if(exact>=0)return exact;
+  const next=w.hourly.time.findIndex(t=>t>=w.current.time);
+  return next>=0?next:0;
+}
+
+function exposure(w){
+  const start=currentIndex(w);
+  const rain=w.hourly.precipitation.slice(start,start+24)
+    .map(v=>Math.max(0,Number(v)||0));
+  const total=rain.reduce((a,b)=>a+b,0);
+  const peak=rain.length?Math.max(...rain):0;
+  const score=Math.min(100,Math.round(total*2+peak*5));
+  const level=score>=80?"VERY HIGH":
+    score>=55?"HIGH":score>=25?"MODERATE":"LOW";
+  return{
+    start,score,level,
+    total:Number(total.toFixed(1)),
+    peak:Number(peak.toFixed(1))
+  };
+}
+
+async function loadWeather(place){
+  if(!valid(place.lat,place.lon)){
+    status("Invalid coordinates.");return;
+  }
+  const id=++app.requestId;
+  status("Fetching weather for "+place.name+"...");
+  try{
+    const w=await getJSON(weatherURL(place.lat,place.lon));
+    if(id!==app.requestId)return;
+    if(!w.current||!w.hourly||!w.daily)
+      throw Error("Incomplete forecast data.");
+
+    app.place=place;
+    app.weather=w;
+    app.risk=exposure(w);
+    app.chatHistory=[];
+    render();
+    updateMap();
+    loadAir(place,id);
+    status("Weather updated · "+new Date().toLocaleString());
+  }catch(error){
+    if(id===app.requestId)
+      status("Weather unavailable: "+error.message);
+  }
+}
+
+function render(){
+  const w=app.weather,c=w.current,r=app.risk;
+  $("placeName").textContent=app.place.name;
+  $("temperature").textContent=fmt(c.temperature_2m)+"°C";
+  $("condition").textContent=condition(c.weather_code);
+  $("feels").textContent="Feels like "+fmt(c.apparent_temperature,1)+"°C";
+  $("humidity").textContent=fmt(c.relative_humidity_2m)+"%";
+  $("wind").textContent=fmt(c.wind_speed_10m,1)+" km/h";
+  $("rainNow").textContent=fmt(c.precipitation,1)+" mm";
+  $("clouds").textContent=fmt(c.cloud_cover)+"%";
+  $("pressure").textContent=fmt(c.surface_pressure)+" hPa";
+  $("rainChance").textContent=
+    (w.hourly.precipitation_probability[r.start]??"—")+"%";
+
+  $("weatherArt").textContent=weatherIcon(c.weather_code);
+  $("moodIcon").textContent=weatherIcon(c.weather_code);
+  $("moodText").textContent=
+    condition(c.weather_code)+" · Forecast-model conditions";
+
+  $("riskScore").textContent=r.score;
+  $("riskLevel").textContent=r.level;
+  $("rain24").textContent=r.total+" mm";
+  $("peakRain").textContent=r.peak+" mm";
+
+  const color=r.score>=80?"#ff748e":
+    r.score>=55?"#ffa66c":
+    r.score>=25?"#ffd27d":"#48efb5";
+
+  $("gauge").style.background=
+    "conic-gradient("+color+" "+(r.score*3.6)+"deg,#263952 0deg)";
+  $("riskLevel").style.color=color;
+
+  $("sunrise").textContent=
+    "Sunrise: "+(w.daily.sunrise[0]?.split("T")[1]||"—");
+  $("sunset").textContent=
+    "Sunset: "+(w.daily.sunset[0]?.split("T")[1]||"—");
+
+  renderCountdown();
+  renderTimeline();
+  renderForecast();
+  renderStory();
+  renderActivities();
+}
+
+function renderCountdown(){
+  const h=app.weather.hourly,start=app.risk.start;
+  let next=-1;
+  for(let i=start;i<Math.min(start+48,h.time.length);i++){
+    if((h.precipitation[i]||0)>0){next=i;break}
+  }
+  $("countdown").textContent=
+    next<0?"No rain forecast in 48h":
+    next===start?"Rain this hour":
+    "About "+(next-start)+" hours";
+}
+
+function renderTimeline(){
+  const h=app.weather.hourly,start=app.risk.start;
+  const rain=h.precipitation.slice(start,start+24);
+  const max=Math.max(1,...rain.map(v=>Number(v)||0));
+  const box=$("rainBars");
+  box.replaceChildren();
+
+  for(let j=0;j<24;j++){
+    const bar=document.createElement("div");
+    bar.className="bar";
+    const value=Number(rain[j])||0;
+    bar.style.height=Math.max(5,value/max*100)+"%";
+    bar.title=(h.time[start+j]||"")+" · "+value+" mm";
+    box.append(bar);
+  }
+  renderHour();
+}
+
+function renderHour(){
+  if(!app.weather)return;
+  const h=app.weather.hourly;
+  const i=app.risk.start+Number($("hourSlider").value);
+  $("hourTime").textContent=(h.time[i]||"—").replace("T"," ");
+  $("hourRain").textContent=(h.precipitation[i]??"—")+" mm";
+  $("hourTemp").textContent=(h.temperature_2m[i]??"—")+"°C";
+  $("hourChance").textContent=
+    (h.precipitation_probability[i]??"—")+"%";
+}
+$("hourSlider").addEventListener("input",renderHour);
+
+function renderForecast(){
+  const d=app.weather.daily,box=$("forecast");
+  box.replaceChildren();
+  d.time.forEach((date,i)=>{
+    const el=document.createElement("div");
+    el.className="day";
+    const day=document.createElement("strong");
+    day.textContent=new Date(date+"T12:00:00")
+      .toLocaleDateString("en-IN",{weekday:"short"});
+    const iconEl=document.createElement("div");
+    iconEl.className="emoji";
+    iconEl.textContent=weatherIcon(d.weather_code[i]);
+    const temp=document.createElement("strong");
+    temp.textContent=fmt(d.temperature_2m_max[i])+"° / "+
+      fmt(d.temperature_2m_min[i])+"°";
+    const rain=document.createElement("small");
+    rain.textContent=fmt(d.precipitation_sum[i],1)+" mm rain";
+    el.append(day,iconEl,temp,rain);
+    box.append(el);
+  });
+}
+
+function renderStory(){
+  const c=app.weather.current,r=app.risk;
+  $("story").textContent=
+    "🌍 "+app.place.name+"\n\n"+
+    "Current conditions: "+condition(c.weather_code)+
+    " at "+fmt(c.temperature_2m,1)+"°C.\n"+
+    "Humidity: "+c.relative_humidity_2m+"%.\n"+
+    "Wind speed: "+c.wind_speed_10m+" km/h.\n\n"+
+    "Next 24-hour forecast rainfall: "+r.total+" mm.\n"+
+    "Peak hourly forecast rainfall: "+r.peak+" mm.\n"+
+    "Experimental rainfall exposure: "+r.level+
+    " ("+r.score+"/100).\n\n"+
+    "This score is not a verified flood warning.";
+}
+
+function renderActivities(){
+  const c=app.weather.current;
+  $("activities").textContent=
+    c.precipitation>0?
+      "🌧 Rain is indicated by the weather model.\nConsider indoor plans and check official warnings.":
+    c.temperature_2m>35?
+      "🌡 Hot conditions.\nPlan outdoor activities for cooler hours.":
+    c.wind_speed_10m>30?
+      "🌬 Windy conditions.\nTake care during exposed outdoor activities.":
+      "🚶 Conditions may suit walking or photography.\nCheck local conditions before going out.";
+}
+
+async function loadAir(place,id){
+  $("airStatus").textContent="Loading air-quality estimates...";
+  const url=new URL("https://air-quality-api.open-meteo.com/v1/air-quality");
+  url.search=new URLSearchParams({
+    latitude:place.lat,longitude:place.lon,
+    current:"us_aqi,pm2_5,pm10",timezone:"auto"
+  });
+  try{
+    const data=await getJSON(url.toString());
+    if(id!==app.requestId)return;
+    const c=data.current||{};
+    $("aqi").textContent=c.us_aqi??"N/A";
+    $("pm25").textContent=c.pm2_5==null?"N/A":c.pm2_5+" µg/m³";
+    $("pm10").textContent=c.pm10==null?"N/A":c.pm10+" µg/m³";
+    $("airStatus").textContent=
+      "Modeled air quality; local sensor readings may differ.";
+  }catch{
+    if(id===app.requestId)
+      $("airStatus").textContent="Air-quality data unavailable.";
+  }
+}
+
+async function searchPlaces(query,target,onSelect){
+  const box=$(target);
+  box.replaceChildren();
+  if(!query.trim())return;
+  try{
+    status("Searching locations...");
+    const url=new URL("https://geocoding-api.open-meteo.com/v1/search");
+    url.search=new URLSearchParams({
+      name:query.trim(),count:8,language:"en",format:"json"
+    });
+    const data=await getJSON(url.toString());
+    if(!data.results?.length){
+      status("No locations found.");return;
+    }
+    data.results.forEach(item=>{
+      const place={
+        name:[item.name,item.admin1,item.country].filter(Boolean).join(", "),
+        lat:item.latitude,lon:item.longitude
+      };
+      const button=document.createElement("button");
+      button.textContent="◎ "+place.name;
+      button.onclick=()=>{
+        box.replaceChildren();
+        onSelect(place);
+      };
+      box.append(button);
+    });
+    status("Select a search result.");
+  }catch(error){
+    status("Search failed: "+error.message);
+  }
+}
+
+$("searchBtn").onclick=()=>searchPlaces(
+  $("searchInput").value,"searchResults",loadWeather
+);
+$("searchInput").onkeydown=e=>{
+  if(e.key==="Enter")$("searchBtn").click();
+};
+
+$("locateBtn").onclick=()=>{
+  if(!navigator.geolocation){
+    status("Geolocation unsupported.");return;
+  }
+  status("Requesting location permission...");
+  navigator.geolocation.getCurrentPosition(
+    p=>loadWeather({
+      name:"My Current Location",
+      lat:p.coords.latitude,lon:p.coords.longitude
+    }),
+    e=>status("Location unavailable: "+e.message),
+    {enableHighAccuracy:true,timeout:15000}
+  );
+};
+
+// Google Maps JavaScript API
+window.hydraxGoogleReady=()=>{
+  app.map=new google.maps.Map($("map"),{
+    center:{lat:app.place.lat,lng:app.place.lon},
+    zoom:12,mapTypeControl:true,
+    streetViewControl:false,fullscreenControl:true
+  });
+  app.map.addListener("click",e=>loadWeather({
+    name:"Selected Google Maps Location",
+    lat:e.latLng.lat(),lon:e.latLng.lng()
+  }));
+  updateMap();
+  $("mapStatus").textContent=
+    "Google Maps active. Click any point to inspect its forecast.";
+};
+
+function updateMap(){
+  if(!app.map||!window.google?.maps)return;
+  const position={lat:app.place.lat,lng:app.place.lon};
+  app.map.setCenter(position);
+  if(app.marker)app.marker.setMap(null);
+  app.marker=new google.maps.Marker({
+    map:app.map,position,title:app.place.name
+  });
+}
+
+$("mapBtn").onclick=()=>{
+  if(app.map)return;
+  const key=$("mapsKey").value.trim();
+  if(!key){
+    $("mapStatus").textContent="Enter your Google Maps browser API key.";
+    return;
+  }
+  $("mapBtn").disabled=true;
+  $("mapStatus").textContent="Loading Google Maps...";
+  const script=document.createElement("script");
+  script.async=true;
+  script.src="https://maps.googleapis.com/maps/api/js?key="+
+    encodeURIComponent(key)+"&callback=hydraxGoogleReady";
+  script.onerror=()=>{
+    $("mapStatus").textContent=
+      "Google Maps failed. Check your API key, restrictions, and billing.";
+    $("mapBtn").disabled=false;
+  };
+  document.head.append(script);
+};
+
+// City Battle
+async function comparePlace(place){
+  $("comparison").textContent="Loading comparison...";
+  try{
+    const w=await getJSON(weatherURL(place.lat,place.lon));
+    const r=exposure(w);
+    $("comparison").textContent=
+      "🌍 "+app.place.name+"\n"+
+      "Temperature: "+app.weather.current.temperature_2m+"°C\n"+
+      "Next 24h rain: "+app.risk.total+" mm\n\n"+
+      "               VS\n\n"+
+      "🌍 "+place.name+"\n"+
+      "Temperature: "+w.current.temperature_2m+"°C\n"+
+      "Next 24h rain: "+r.total+" mm\n\n"+
+      "Comparison uses forecasts, not verified flood data.";
+  }catch(error){
+    $("comparison").textContent="Comparison failed: "+error.message;
+  }
+}
+
+$("compareBtn").onclick=()=>{
+  if(app.weather)searchPlaces(
+    $("compareInput").value,"compareResults",comparePlace
+  );
+};
+$("compareInput").onkeydown=e=>{
+  if(e.key==="Enter")$("compareBtn").click();
+};
+
+// Saved Locations
+function persistFavorites(){
+  localStorage.setItem("hydrax-favorites",JSON.stringify(app.favorites));
+}
+function renderFavorites(){
+  const box=$("favorites");
+  box.replaceChildren();
+  app.favorites.forEach((p,i)=>{
+    const open=document.createElement("button");
+    open.textContent="◎ "+p.name;
+    open.onclick=()=>loadWeather(p);
+    const remove=document.createElement("button");
+    remove.textContent="×";
+    remove.setAttribute("aria-label","Remove "+p.name);
+    remove.onclick=()=>{
+      app.favorites.splice(i,1);
+      persistFavorites();
+      renderFavorites();
+    };
+    box.append(open,remove);
+  });
+}
+$("saveBtn").onclick=()=>{
+  const p=app.place;
+  if(app.favorites.some(x=>x.lat===p.lat&&x.lon===p.lon)){
+    status("Location already saved.");return;
+  }
+  if(app.favorites.length>=30){
+    status("Maximum 30 saved locations.");return;
+  }
+  app.favorites.push({...p});
+  persistFavorites();
+  renderFavorites();
+  status("Location saved.");
+};
+
+$("refreshBtn").onclick=()=>loadWeather(app.place);
+
+$("copyBtn").onclick=async()=>{
+  try{
+    await navigator.clipboard.writeText($("story").textContent);
+    status("Weather story copied.");
+  }catch{status("Clipboard unavailable.")}
+};
+
+$("shareBtn").onclick=async()=>{
+  const url=new URL(location.href);
+  url.searchParams.set("lat",app.place.lat);
+  url.searchParams.set("lon",app.place.lon);
+  url.searchParams.set("name",app.place.name);
+  try{
+    if(navigator.share){
+      await navigator.share({title:"NVV HYDRAX",url:url.href});
+    }else{
+      await navigator.clipboard.writeText(url.href);
+      status("Location link copied.");
+    }
+  }catch{}
+};
+
+$("exportBtn").onclick=()=>{
+  if(!app.weather)return;
+  const h=app.weather.hourly;
+  const rows=[["Time","Rain mm","Rain Chance %","Temperature C"]];
+  h.time.forEach((time,i)=>rows.push([
+    time,h.precipitation[i],
+    h.precipitation_probability[i],
+    h.temperature_2m[i]
+  ]));
+  const csv=rows.map(row=>row.map(v=>
+    '"'+String(v??"").replace(/"/g,'""')+'"'
+  ).join(",")).join("\r\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download="NVV-HYDRAX-forecast.csv";a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+
+// HYDRAX Intelligence — secure backend integration
+function addMessage(role,text){
+  const el=document.createElement("div");
+  el.className="message "+role;
+  el.textContent=text;
+  $("chat").append(el);
+  $("chat").scrollTop=$("chat").scrollHeight;
+  return el;
+}
+
+function aiContext(){
+  if(!app.weather||!app.risk)return null;
+  const w=app.weather,start=app.risk.start;
+  return{
+    location:app.place,
+    forecast_time:w.current.time,
+    timezone:w.timezone,
+    current:{
+      temperature_c:w.current.temperature_2m,
+      feels_like_c:w.current.apparent_temperature,
+      humidity_percent:w.current.relative_humidity_2m,
+      precipitation_mm:w.current.precipitation,
+      wind_kmh:w.current.wind_speed_10m,
+      condition:condition(w.current.weather_code)
+    },
+    rainfall_exposure:{
+      score:app.risk.score,
+      level:app.risk.level,
+      next_24h_rain_mm:app.risk.total,
+      peak_hourly_rain_mm:app.risk.peak,
+      validated_flood_risk:false
+    },
+    hourly_next_24h:w.hourly.time.slice(start,start+24).map((time,i)=>({
+      time,
+      precipitation_mm:w.hourly.precipitation[start+i],
+      rain_probability_percent:
+        w.hourly.precipitation_probability[start+i],
+      temperature_c:w.hourly.temperature_2m[start+i]
+    })),
+    daily:w.daily.time.map((date,i)=>({
+      date,
+      high_c:w.daily.temperature_2m_max[i],
+      low_c:w.daily.temperature_2m_min[i],
+      rain_mm:w.daily.precipitation_sum[i]
+    }))
+  };
+}
+
+let aiBusy=false;
+async function sendAI(question){
+  const text=String(question||"").trim();
+  if(!text||aiBusy)return;
+  if(!app.weather){
+    $("aiStatus").textContent="Wait for weather data to load.";
+    return;
+  }
+  if(text.length>1000){
+    $("aiStatus").textContent="Keep questions under 1000 characters.";
+    return;
+  }
+  addMessage("user",text);
+  $("aiInput").value="";
+  aiBusy=true;
+  $("aiSend").disabled=true;
+  $("aiStatus").textContent="HYDRAX Intelligence is analyzing...";
+  const waiting=addMessage("assistant","Thinking...");
+
+  try{
+    const response=await fetch("/api/ai",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        question:text,
+        context:aiContext(),
+        history:app.chatHistory.slice(-8)
+      })
+    });
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok)
+      throw Error(data.error||"AI service unavailable.");
+    if(typeof data.answer!=="string"||!data.answer.trim())
+      throw Error("Empty AI response.");
+
+    waiting.textContent=data.answer;
+    app.chatHistory.push(
+      {role:"user",content:text},
+      {role:"assistant",content:data.answer}
+    );
+    app.chatHistory=app.chatHistory.slice(-8);
+    $("aiStatus").textContent="HYDRAX Intelligence response ready.";
+  }catch(error){
+    waiting.textContent="AI unavailable: "+error.message;
+    $("aiStatus").textContent=
+      "Deploy a secure OpenRouter backend at /api/ai.";
+  }finally{
+    aiBusy=false;
+    $("aiSend").disabled=false;
+    $("chat").scrollTop=$("chat").scrollHeight;
+  }
+}
+
+$("aiSend").onclick=()=>sendAI($("aiInput").value);
+$("aiInput").onkeydown=e=>{
+  if(e.key==="Enter")sendAI($("aiInput").value);
+};
+document.querySelectorAll("[data-q]").forEach(button=>{
+  button.onclick=()=>sendAI(button.dataset.q);
+});
+
+function initialize(){
+  renderFavorites();
+
+  const params=new URLSearchParams(location.search);
+  if(params.has("lat")&&params.has("lon")){
+    const lat=Number(params.get("lat"));
+    const lon=Number(params.get("lon"));
+    if(valid(lat,lon)){
+      app.place={
+        name:(params.get("name")||"Shared Location").slice(0,80),
+        lat,lon
+      };
+    }
+  }
+
+  function clock(){
+    $("clock").textContent=new Date().toLocaleTimeString(
+      "en-IN",{hour:"2-digit",minute:"2-digit"}
+    );
+  }
+  clock();
+  setInterval(clock,30000);
+  loadWeather(app.place);
+}
+
+initialize();
+</script>
+</body>
+</html>
